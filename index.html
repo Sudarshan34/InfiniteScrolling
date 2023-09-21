@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Images On Infinite Scrolling</title>
+</head>
+<style>
+
+    body{
+        background-color: black;
+        color: white;
+    }
+
+  .container{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: auto;
+  }
+  .image{
+    width: 200px;
+    margin: 30px 100px;
+    border-radius: 10px;
+    border: 2px solid rgb(195, 97, 113)
+  }
+  .title{
+    text-align: center;
+  }
+</style>
+<body>
+  <h1 class="title">Dynamic Images</h1>
+  <div class="container" id="content">
+  </div>
+  <script>
+    const content=document.getElementById("content")
+    content.innerHTML=""
+    
+    async function loadImages(num){
+      for(let i=1;i<=num;i++){
+        let response=await fetch("https://source.unsplash.com/random")
+        let imageUrl=response.url;
+        content.innerHTML+=`<img class="image" src="${imageUrl}" alt="">`
+      }
+    }
+
+    window.addEventListener("scroll",(e)=>{
+      let{clientHeight,scrollTop,scrollHeight}=e.target.documentElement;
+      if(clientHeight+scrollTop+1>=scrollHeight){
+        loadImages(9);
+      }
+    })
+
+    loadImages(10);
+  </script>
+</body>
+</html>
